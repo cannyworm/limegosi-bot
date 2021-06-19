@@ -23,8 +23,11 @@ var date_to_str = (date) => {
   return date.toLocaleTimeString([], time_format)
 }
 
-// just a place holder
-const weekend_subjects = [new Subject('fun',"lady and gentlemen. The Weekend","Abel","https://open.spotify.com/album/4yP0hdKOZPNshxUOjY0cZj","https://open.spotify.com/track/6b5P51m8xx2XA6U7sdNZ5E")]
+
+const weekend_subjects = [
+  'fun'
+]
+
 
 class EmbedTimetable extends Command {
 
@@ -53,7 +56,13 @@ class EmbedTimetable extends Command {
 
     const line_prefix = '\_\_\_'
     
+    if ( this.timetable.is_weekend(day[1])) {
+
+    }
+    
     let timetable = this.timetable.is_weekend(day[1]) ? weekend_subjects : this.timetable._TimeTable[day[1]]
+
+    
     let main_embed = new Discord.MessageEmbed()
       .setTitle(`ตารางเรียน วัน ${day[2]}`)
       .addField("รหัสวิชา", line_prefix, true)
@@ -116,6 +125,10 @@ class TextTimetable extends Command {
     if (day === undefined)
       throw `day === undefined ${args[1]}`
 
+    if ( this.timetable.is_weekend(day[1])) {
+
+    }
+
     let timetable = this.timetable.is_weekend(day[1]) ? weekend_subjects : this.timetable._TimeTable[day[1]]
     let colums = []
 
@@ -126,7 +139,7 @@ class TextTimetable extends Command {
     */
     var thai_virtual_fix = (text) => { 
       const sp_char = [
-          '\u0E31', // 
+          '\u0E31', 
           '\u0E34',
           '\u0E35',
           '\u0E36',
@@ -223,7 +236,7 @@ class TextTimetable extends Command {
  * @param {MessageCallback} filters who can use these debug commands
  */
 var add_debug_commands = (cmds , filters) => {
-
+  // lol what
   
 }
 

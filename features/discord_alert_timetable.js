@@ -1,5 +1,5 @@
 const {TimeTable , Subject} = require('../timetable')
-const {date_to_str} = require('./discord_simple_timetable')
+const {date_to_str} = require('./discord_full_timetable')
 
 const Discord = require('discord.js')
 

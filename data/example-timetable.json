@@ -1,4 +1,9 @@
+
 {
+    "weekend" : [
+        "satureday",
+        "sunday"
+    ],
     "sunday" : [],
     "monday": [
         "a123456",

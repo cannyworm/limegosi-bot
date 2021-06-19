@@ -1,4 +1,15 @@
+
 {
+    "fun" : {
+        "code" :"fun",
+        "name":"lady and gentlemen. The Weekend",
+        "teaher_name":"Abel",
+        "google_classroom" : "https://open.spotify.com/track/6b5P51m8xx2XA6U7sdNZ5E" ,
+        "meet_link" : "https://open.spotify.com/album/4yP0hdKOZPNshxUOjY0cZj",
+        "image" : "https://media.tenor.com/images/deabea9a002a417aaff68ee3e13a7a58/tenor.gif",
+        "extra" : "It's After Hour :D",
+        "alert" : { "enable" : true , "ping" : false } 
+    },
     "a123456" : {
         "code" : "a123456",
         "name" : "Math",
