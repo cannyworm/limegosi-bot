@@ -1,17 +1,18 @@
 // test test
 const ms_min = 1000 * 60
 
-const {auto_del_time} = require('./adt')
-
+const { auto_del_time } = require('./adt')
+const Discord = require('discord.js')
 const { TimeTable } = require('./timetable')
 const T = new TimeTable(require('./data/subject.json'), require('./data/timetable.json'))
-
+const { Command, Commands } = require('./commands')
+const { EmbedTimetable, TextTimetable } = require('./features/discord_full_timetable')
 const { AlertTimetable } = require('./features/discord_alert_timetable')
-  
+
 const alert_timetable = new AlertTimetable(T,require('./embeds.json'))
 
 const bot_config = require('./bot-config.json')
-const Discord = require('discord.js')
+
 const client = new Discord.Client();
 
 var old_period, school_over, school_start , weekend
@@ -69,9 +70,9 @@ var pupdate = () => {
 }
 
 
-const { Command, Commands } = require('./commands')
+
 const cmds = new Commands(bot_config.prefix, { auto_delete_prompt: 1000 })
-const { EmbedTimetable , TextTimetable} = require('./features/discord_simple_timetable')
+
 
 var pcheck
 var last_message = undefined
@@ -140,7 +141,7 @@ client.on('ready', async () => {
     
     if (is_subject === false) {
 
-      if (T.is_weekend()) {
+      if (T.is_weekend()) { 
         last_message = await webhook.send({
           content: "",
           embeds: [

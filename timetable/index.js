@@ -196,8 +196,24 @@ class TimeTable {
         return this.get_current_period() > -1
     }
 
-    is_weekend = function() {
-        return !!this._TimeTable.weekend.find( v => v === daysofweek[(new Date()).getDay()])
+    
+    /**
+     * @param {?string|number|Date} day
+     */
+    is_weekend = function(day) {
+        
+        if (typeof day === 'undefined')
+            return !!this._TimeTable.weekend.find( v => v === daysofweek[(new Date()).getDay()])
+            
+        if (typeof day === 'string')
+            return !!this._TimeTable.weekend.find( v => v === day)
+
+        if (typeof day === 'number')
+            return !!this._TimeTable.weekend.find( v => v === daysofweek[day])
+
+        if (typeof day === 'Date')
+            return !!this._TimeTable.weekend.find( v => v === daysofweek[day.getDay()])
+
     }
 
     /**
