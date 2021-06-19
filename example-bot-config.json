@@ -1,0 +1,8 @@
+{
+    "token":"bot token here",
+    "owner": "your discord id",
+    "prefix" : "&",
+    "my_guild" : "your server id",
+    "webhook" : "your webhook",
+    "ping" : "<@&role id to ping>" 
+}

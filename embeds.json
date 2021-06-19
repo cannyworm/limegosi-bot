@@ -1,0 +1,104 @@
+{
+
+    "school_over": {
+        "color": 6029567,
+        "author": {
+            "name": "SCHOOL",
+            "icon_url": "https://i.imgur.com/HQWULmW.jpeg"
+        },
+        "title": "School is over",
+        "description": "I'm gone b**ches",
+        "image": "https://media1.tenor.com/images/8cdf1a00339c12409df0714cf46745bc/tenor.gif?itemid=21674137",
+        "footer": {
+            "text": "last check @",
+            "icon_url": "https://i.imgur.com/McggFJP.jpeg"
+        }
+    },
+
+    "school_isnt_start": {
+        "color": 3407616,
+        "author": {
+            "name": "SCHOOL",
+            "icon_url": "https://i.imgur.com/HQWULmW.jpeg"
+        },
+        "title": "School isn't start yet..",
+        "description": "goto sleep while you can",
+        "image": {
+            "url":"https://media1.tenor.com/images/e7f7d1d8bde5a79dbcc8c382261c1fc3/tenor.gif?itemid=15672620"
+        },
+        "footer": {
+            "text": "last check @",
+            "icon_url": "https://i.imgur.com/McggFJP.jpeg"
+        }
+    },
+    
+    "weekend" : {
+        
+    },
+    
+    "subject": {
+        "color" : 2752256,
+        "author": {
+            "name": "Class 5/9",
+            "icon_url":  "https://i.imgur.com/HQWULmW.jpeg"
+        },
+        "title" : "$name$",
+        "description" : "$code$ $teacher_name$",
+        "fields" : [
+            {
+                "name" : "Start",
+                "value" : "$start_period$",
+                "inline" : true
+            },
+            {
+                "name" : "End",
+                "value" : "$end_period$",
+                "inline" : true
+            },
+            {
+                "name" : "Google Meet / Zoom",
+                "value" : "$meet_link$"
+            },
+            {
+                "name" : "Google Classroom",
+                "value" : "$google_classroom$",
+                "inline" : true
+
+            },
+            {
+                "name" : "Extra",
+                "value" : "$extra$"
+            }
+        ],
+        "image" : "$image$",
+        "footer": {
+            "text": "last check @",
+            "icon_url": "https://i.imgur.com/McggFJP.jpeg"
+        }
+    },
+    "min_subject": {
+        "color" : 16777215,
+        "author": {
+            "name": "Next Subject",
+            "icon_url":  "https://i.imgur.com/HQWULmW.jpeg"
+        },
+        "title" : "$name$",
+        "description" : "$code$ $teacher_name$",
+        "fields" : [
+            {
+                "name" : "Start",
+                "value" : "$start_period$",
+                "inline" : true
+            },
+            {
+                "name" : "End",
+                "value" : "$end_period$",
+                "inline" : true
+            }
+        ],
+        "footer": {
+            "text": "last check @",
+            "icon_url": "https://i.imgur.com/McggFJP.jpeg"
+        }
+    }
+}

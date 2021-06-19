@@ -1,0 +1,64 @@
+{
+    "a123456" : {
+        "code" : "a123456",
+        "name" : "Math",
+        "teacher_name" : "Mr. John",
+        "google_classroom" : "https://classroom.google.com",
+        "meet_link" : "https://meet.google.com",
+        "image" : "",
+        "extra" : "Very boring",
+        "alert" : { "enable" : true , "ping" : false } 
+    },
+    "b123456" : {
+        "code" : "b123456",
+        "name" : "Physics",
+        "teacher_name" : "Mr. Mike",
+        "google_classroom" : "https://classroom.google.com",
+        "meet_link" : "https://meet.google.com",
+        "image" : "",
+        "extra" : "Love this teacher",
+        "alert" : { "enable" : true , "ping" : false } 
+    },
+    "c123456" : {
+        "code" : "c123456",
+        "name" : "Computer",
+        "teacher_name" : "Mrs. Lisa",
+        "google_classroom" : "https://classroom.google.com",
+        "meet_link" : "https://meet.google.com",
+        "image" : "https://media.giphy.com/media/MM0Jrc8BHKx3y/giphy.gif",
+        "extra" : "c supermercy",
+        "alert" : { "enable" : true , "ping" : false } 
+    },
+    "ก123456" : {
+        "code" : "ก123456",
+        "name" : "ภาษาไทย",
+        "teacher_name" : "ครู หญิง",
+        "google_classroom" : "https://www.youtube.com",
+        "meet_link" : "",
+        "image" : "https://media1.tenor.com/images/1f0dbbd465068fc33007e1af4667772e/tenor.gif?itemid=19543602",
+        "extra" : "ข้าว",
+        "alert" : { "enable" : true , "ping" : false } 
+    },
+    "ข123456" : {
+        "code" : "ข123456",
+        "name" : "คณิต",
+        "teacher_name" : "ครู ชาย",
+        "google_classroom" : "https://www.youtube.com",
+        "meet_link" : "",
+        "image" : "",
+        "extra" : "",
+        "alert" : { "enable" : true , "ping" : false } 
+    },
+
+    "lunch" : {
+        "code" : "lunch",
+        "name" : "Lunc time !!!",
+        "teacher_name" : "Me",
+        "google_classroom" : "https://www.youtube.com",
+        "meet_link" : "https://www.youtube.com",
+        "image" : "",
+        "extra" : "",
+        "alert" : { "enable" : true , "ping" : false } 
+    }
+    
+}
