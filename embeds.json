@@ -33,7 +33,20 @@
     },
     
     "weekend" : {
-        
+        "title": "yoooooooo It's weekend  :partying_face:",
+        "description": "see ya all later",
+        "color": 55039,
+        "author": {
+            "name": "SCHOOL",
+            "icon_url": "https://i.imgur.com/HQWULmW.jpeg"
+        },
+        "footer": {
+            "text": "last check @",
+            "icon_url": "https://i.imgur.com/McggFJP.jpeg"
+        },
+        "image": {
+            "url": "https://media.giphy.com/media/utUEJY2cXzVvnrB152/giphy.gif"
+        }
     },
     
     "subject": {

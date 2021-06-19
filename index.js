@@ -6,15 +6,31 @@ const {auto_del_time} = require('./adt')
 const { TimeTable } = require('./timetable')
 const T = new TimeTable(require('./data/subject.json'), require('./data/timetable.json'))
 
+const { AlertTimetable } = require('./features/discord_alert_timetable')
+  
+const alert_timetable = new AlertTimetable(T,require('./embeds.json'))
+
 const bot_config = require('./bot-config.json')
 const Discord = require('discord.js')
 const client = new Discord.Client();
 
-var old_period, school_over, school_start
+var old_period, school_over, school_start , weekend
 var discord_callback;
 
 
 var pupdate = () => {
+
+  if (weekend !== T.is_weekend()) {
+    weekend = T.is_weekend()
+    if (weekend && discord_callback) {
+      console.log('[i] it\' weekend')
+      discord_callback(false)
+      return true
+    }
+  }
+  
+  if (weekend)
+    return false
 
   if (school_over !== T.is_school_over()) {
     school_over = T.is_school_over()
@@ -25,6 +41,7 @@ var pupdate = () => {
     }
   }
 
+  
   if (school_start !== T.is_school_start()) {
     school_start = T.is_school_start()
     if (!school_start && discord_callback) {
@@ -117,27 +134,34 @@ client.on('ready', async () => {
   let channel = await my_guild.channels.resolve(webhook.channelID)
   last_message = (await channel.messages.fetch({ limit: 10 })).find(m => m.author.id == webhook.id)
 
-
-  const { AlertTimetable } = require('./features/discord_alert_timetable')
-  
-  const alert_timetable = new AlertTimetable(T,require('./embeds.json'))
-
   discord_callback = async (is_subject) => {
     if (typeof last_message !== 'undefined')
       last_message.delete().then(() => last_message = undefined)
     
     if (is_subject === false) {
 
-      if (T.is_school_over()) {
+      if (T.is_weekend()) {
+        last_message = await webhook.send({
+          content: "",
+          embeds: [
+            alert_timetable.get_weekend_embed()
+          ]
+        })
+        return
+      }
+      
 
+      if (T.is_school_over()) {
         last_message = await webhook.send({
           content: "",
           embeds: [
             alert_timetable.get_school_over_embed()
           ]
         })
+        return
+      }
 
-      } else if (!T.is_school_start()) {
+      if (!T.is_school_start()) {
         last_message = await webhook.send({
           content: "",
           embeds: [
@@ -145,9 +169,10 @@ client.on('ready', async () => {
             alert_timetable.get_min_subject_embed(T.get_period_subject(0))
           ]
         })
+        return
       }
 
-      return
+      
     }
     
     let cs = T.get_current_subject()

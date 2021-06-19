@@ -18,6 +18,7 @@ class AlertTimetable {
         this.type_fix(this.config.school_isnt_start)
         this.type_fix(this.config.subject)
         this.type_fix(this.config.min_subject)
+        this.type_fix(this.config.weekend)
         
     }
 
@@ -49,6 +50,15 @@ class AlertTimetable {
     get_school_isnt_start_embed = () => {
         
         const embed =  new Discord.MessageEmbed(this.config.school_isnt_start)
+        
+        this.assign_timestamp(embed)
+
+        return embed
+    }
+
+    get_weekend_embed = () => {
+        
+        const embed =  new Discord.MessageEmbed(this.config.weekend)
         
         this.assign_timestamp(embed)
 

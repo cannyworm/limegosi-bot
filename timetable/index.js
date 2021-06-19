@@ -1,3 +1,4 @@
+const daysofweek = [ 'sunday' , 'monday' , 'tuesday' , 'wednesday' , 'thursday' , 'friday' , 'satureday' ]
 
 class Subject {
 
@@ -109,9 +110,7 @@ class TimeTable {
      * @returns {string[]}
      */
     get_current_table = function() {
-        let curtime = new Date()
-        const dayofweeks = [ 'sunday' , 'monday' , 'tuesday' , 'wednesday' , 'thursday' , 'friday' , 'satureday' ]
-        return this._TimeTable[dayofweeks[curtime.getDay()]]
+        return this._TimeTable[daysofweek[(new Date()).getDay()]]
     }
 
     /**
@@ -197,6 +196,9 @@ class TimeTable {
         return this.get_current_period() > -1
     }
 
+    is_weekend = function() {
+        return !!this._TimeTable.weekend.find( v => v === daysofweek[(new Date()).getDay()])
+    }
 
     /**
      * 
