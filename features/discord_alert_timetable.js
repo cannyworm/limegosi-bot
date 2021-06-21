@@ -24,8 +24,14 @@ class AlertTimetable {
 
 
     type_fix = (json_embed) => {
+        
+        if (json_embed.image === undefined)
+            json_embed.image = { 'url' :  ""}
+
         if (typeof json_embed.image === 'string')
             json_embed.image = { 'url' :  json_embed.image}
+
+
     }
 
 

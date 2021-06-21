@@ -56,10 +56,6 @@ class EmbedTimetable extends Command {
 
     const line_prefix = '\_\_\_'
     
-    if ( this.timetable.is_weekend(day[1])) {
-
-    }
-    
     let timetable = this.timetable.is_weekend(day[1]) ? weekend_subjects : this.timetable._TimeTable[day[1]]
 
     

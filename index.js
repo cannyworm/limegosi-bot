@@ -4,13 +4,12 @@ const ms_min = 1000 * 60
 const { auto_del_time } = require('./adt')
 const Discord = require('discord.js')
 const { TimeTable } = require('./timetable')
-const T = new TimeTable(require('./data/subject.json'), require('./data/timetable.json'))
 const { Command, Commands } = require('./commands')
 const { EmbedTimetable, TextTimetable } = require('./features/discord_full_timetable')
 const { AlertTimetable } = require('./features/discord_alert_timetable')
 
+const T = new TimeTable(require('./data/subject.json'), require('./data/timetable.json'))
 const alert_timetable = new AlertTimetable(T,require('./embeds.json'))
-
 const bot_config = require('./bot-config.json')
 
 const client = new Discord.Client();
@@ -173,7 +172,6 @@ client.on('ready', async () => {
         return
       }
 
-      
     }
     
     let cs = T.get_current_subject()
@@ -196,7 +194,7 @@ client.on('ready', async () => {
     )
   }
 
-  pcheck = setInterval(pupdate, 100)
+  pcheck = setInterval(pupdate, 1000)
 })
 
 client.on('message', async (message) => {
