@@ -77,9 +77,11 @@ class AlertTimetable {
      * @param {Subject} subject
      */
     assign_subject_var = (embed , subject) => {
+        
         let json_string = JSON.stringify(embed)
         json_string = json_string.replace('$name$',subject.name)
         json_string = json_string.replace('$code$',subject.code)
+        json_string = json_string.replace('$period$',subject.period)
         json_string = json_string.replace('$teacher_name$',subject.teacher_name)
         json_string = json_string.replace('$meet_link$',(subject.meet_link === "" || subject.meet_link === undefined) ? `check in ${subject.google_classroom}` : subject.meet_link)
         json_string = json_string.replace('$google_classroom$',subject.google_classroom)

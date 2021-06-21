@@ -55,7 +55,7 @@
             "name": "Class 5/9",
             "icon_url":  "https://i.imgur.com/HQWULmW.jpeg"
         },
-        "title" : "$name$",
+        "title" : "$name$ [$period$]",
         "description" : "$code$ $teacher_name$",
         "fields" : [
             {
