@@ -84,7 +84,7 @@ class AlertTimetable {
         json_string = json_string.replace('$meet_link$',(subject.meet_link === "" || subject.meet_link === undefined) ? `check in ${subject.google_classroom}` : subject.meet_link)
         json_string = json_string.replace('$google_classroom$',subject.google_classroom)
         json_string = json_string.replace('$extra$',subject.extra)
-        json_string = json_string.replace('$image$',subject.image)
+        json_string = json_string.replace('$image$',subject.image || "")
         
         json_string = json_string.replace('$start_period$',date_to_str(TimeTable.get_period_start(subject.period)))
         json_string = json_string.replace('$end_period$',date_to_str(TimeTable.get_period_end(subject.period)))
