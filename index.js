@@ -19,6 +19,9 @@ var discord_callback;
 
 
 var pupdate = () => {
+  
+  if (T.update_timetable())
+    console.log('[i] time change we difference')
 
   if (weekend !== T.is_weekend()) {
     weekend = T.is_weekend()

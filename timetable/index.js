@@ -87,6 +87,7 @@ class TimeTable {
 
         // assign json object to Subject
         Object.entries(this.Subjects).forEach ( v => {this.Subjects[v[0]] =  (new Subject()).assign(v[1])} )
+        this.CurrentDay = (new Date()).getDay()
         this.CurrentTimeTable = this.get_current_table()
         this.force_period = undefined
     }
@@ -110,7 +111,7 @@ class TimeTable {
      * @returns {string[]}
      */
     get_current_table = function() {
-        return this._TimeTable[daysofweek[(new Date()).getDay()]]
+        return this._TimeTable[daysofweek[this.CurrentDay]]
     }
 
     /**
@@ -170,6 +171,15 @@ class TimeTable {
      */
     get_current_subject_code = function () {
         return this.get_period_subject_code(this.get_current_period())
+    }
+
+    update_timetable = function () {
+        let c = new Date()
+        if (this.CurrentDay === c.getDay())
+            return false
+
+        this.CurrentDay = c.getDay()
+        this.CurrentTimeTable =  this._TimeTable[daysofweek[this.CurrentDay]]
     }
 
     /**
