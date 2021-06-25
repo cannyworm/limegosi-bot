@@ -180,6 +180,7 @@ class TimeTable {
 
         this.CurrentDay = c.getDay()
         this.CurrentTimeTable =  this._TimeTable[daysofweek[this.CurrentDay]]
+        return true
     }
 
     /**

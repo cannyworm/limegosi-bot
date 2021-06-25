@@ -32,7 +32,7 @@ var pupdate = () => {
     }
   }
   
-  if (weekend)
+  if (T.is_weekend())
     return false
 
   if (school_over !== T.is_school_over()) {
@@ -96,6 +96,9 @@ client.on('ready', async () => {
     let option = args[2]
     let value = args[3]
 
+    if (subject_code === '$')
+      subject_code = T.get_current_subject_code()
+
     if (subject_code === undefined)
       throw "subject_code === undefined"
     if (option === undefined)
@@ -138,7 +141,7 @@ client.on('ready', async () => {
   last_message = (await channel.messages.fetch({ limit: 10 })).find(m => m.author.id == webhook.id)
 
   discord_callback = async (is_subject) => {
-    if (typeof last_message !== 'undefined')
+    if (last_message !== undefined && last_message.deleted === false)
       last_message.delete().then(() => last_message = undefined)
     
     if (is_subject === false) {
