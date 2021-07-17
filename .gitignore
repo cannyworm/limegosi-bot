@@ -123,5 +123,6 @@ fuckyou.js
 bot-config.json
 subject.json
 timetable.json
-thai_char_test.js
-timetable/test.js
+data/periods.json
+data/subjects.json
+
