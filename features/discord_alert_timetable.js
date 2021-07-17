@@ -25,7 +25,7 @@ class AlertTimetable {
     }
 
     assign_var = (embed , subject) => {
-                    
+        
         let json_string = JSON.stringify(embed)
         json_string = json_string.replace('$name$',subject.name)
         json_string = json_string.replace('$code$',subject.code)
@@ -34,9 +34,10 @@ class AlertTimetable {
         json_string = json_string.replace('$meet_link$',(subject.meet_link === "" || subject.meet_link === undefined) ? `check in ${subject.gclass_link}` : subject.meet_link)
         json_string = json_string.replace('$google_classroom$',subject.gclass_link)
         
-        let extra  = this.config.subjects[subject.code]
-        json_string = json_string.replace('$extra$',extra.extra ?? this.config.subjects._global.extra)
-        json_string = json_string.replace('$image$',extra.image ?? this.config.subjects._global.image)
+        let extra  = this.config.subjects[subject.code] ?? this.config.subjects._global
+        
+        json_string = json_string.replace('$extra$', extra.extra ?? this.config.subjects._global.extra)
+        json_string = json_string.replace('$image$', extra.image ?? this.config.subjects._global.image)
         
         json_string = json_string.replace('$start_period$',date_to_str(this.timetable.get_period_start(subject.period)))
         json_string = json_string.replace('$end_period$',date_to_str(this.timetable.get_period_end(subject.period)))
@@ -45,6 +46,12 @@ class AlertTimetable {
 
     }
 
+    should_alert = (subject) => {
+        if (this.config.subjects[subject.code]?.alert !== undefined)
+            return this.config.subjects[subject.code].alert
+
+        return this.config.subjects._global.alert
+    }
 
     get_subject_embed = (subject) => {
         let embed = this.assign_var(this.config.subject , subject)

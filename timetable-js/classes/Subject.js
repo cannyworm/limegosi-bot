@@ -9,10 +9,10 @@ class Subject {
 
         const { name , teacher_name , gclass_link , meet_link } = extra_information
 
-        this.name = name
-        this.teacher_name = teacher_name 
-        this.gclass_link = gclass_link
-        this.meet_link = meet_link
+        this.name = name ?? this.code
+        this.teacher_name = teacher_name ?? "not define" 
+        this.gclass_link = gclass_link ?? "not define"
+        this.meet_link = meet_link ?? "not define"
     }
 
 }

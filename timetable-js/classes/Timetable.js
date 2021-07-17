@@ -36,12 +36,13 @@ class Timetable {
                     throw `error parsing day.length ${strlength} is not a valid length`
                 }
     
-                return new Subject(code , sum += length , length , i , { ... this.subject_list[code] })
+                return new Subject(code , sum += length , length , i , { ... (this.subject_list[code]) })
             }))
         }
 
         this.period_udpate_callbacks = []
     }
+    
     parse_time = (str) => {
         let digits = str.split(/[\.\:]/)
         let h = Number.parseInt(digits[0])
@@ -53,7 +54,6 @@ class Timetable {
     }
 
     get_day = () => {
-        return 1
         return this.get_date().getDay()
     }
 
@@ -62,8 +62,6 @@ class Timetable {
     }
 
     get_sum_min = () => {
-        return 1
-
         let d = this.get_date()
         return (d.getHours() * 60) + d.getMinutes()
     }
@@ -73,7 +71,6 @@ class Timetable {
     }
 
     get_current_period_index = () => {
-
         let time_diff = this.get_sum_min() - this.start_time
         if (time_diff < 0) return undefined
         let current_period = undefined
@@ -133,12 +130,14 @@ class Timetable {
             
             let i = this.get_current_period()
             let tt = this.get_current_timetalbe()
+            let time_diff = this.get_sum_min() - this.start_time
+            
             this.period_udpate_callbacks.forEach( fn => { 
                 fn({
                     current_period : i , 
                     next_period : i ? this.get_period_subject(i.period+1) : undefined,
-                    isnt_started : this.get_sum_min() < this.start_time , 
-                    ended : this.get_sum_min() > tt[tt.length-1].time
+                    isnt_started : time_diff < 0 , 
+                    ended : time_diff > tt[tt.length-1].time
                 })
             })
         }

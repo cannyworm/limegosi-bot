@@ -74,7 +74,7 @@ client.on('ready', async () => {
     if (next_period) 
       embeds.push( alert_timetable.get_mini_subject_embed(next_period))
     last_message = await webhook.send({
-      "content": "",
+      "content": alert_timetable.should_alert(current_period) ? bot_config.ping : "" ,
       "embeds": embeds
     })
 
