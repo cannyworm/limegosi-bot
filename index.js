@@ -6,7 +6,7 @@ const Discord = require('discord.js')
 const bot_config = require('./bot-config.json')
 const { Timetable } = require('./timetable-js')
 const { Command, Commands } = require('./commands')
-// const { EmbedTimetable, TextTimetable } = require('./features/discord_full_timetable')
+const { EmbedTimetable, TextTimetable } = require('./features/discord_full_timetable')
 const { AlertTimetable } = require('./features/discord_alert_timetable')
 
 const T = new Timetable(require('./data/periods.json'), require('./data/subjects.json'))
@@ -23,26 +23,42 @@ client.on('ready', async () => {
 
   console.log(`bot is rady login as ${client.user.tag}`)
   
-
+  client.user.setActivity({
+    "type": "STREAMING",
+    "name" : "limegosi:louismonade"
+  })
   const is_owner = async (message) => {
     return message.author.id == bot_config.owner
   }
 
-  cmds.add_command(new Command('ping', async (message) => { message.reply('pong') }, is_owner))
+  cmds.add_command(new Command('ping', async (message) => { message.reply('pong') }, [is_owner]))
+  cmds.add_command(new EmbedTimetable(T,'tt'))
 
   let my_guild = await client.guilds.fetch(bot_config.my_guild)
   let webhook = (await my_guild.fetchWebhooks()).find((v, k) => k == bot_config.webhook)
   
   let channel = await my_guild.channels.resolve(webhook.channelID)
   last_message = (await channel.messages.fetch({ limit: 10 })).find(m => m.author.id == webhook.id)
+
   if (last_message != undefined)
     await last_message.delete()
 
-  T.add_period_update_callback( async ({ current_period, next_period, isnt_started, ended }) => {
+  T.add_period_update_callback( async ({ current_period, next_period, isnt_started, ended , weekend }) => {
     if (last_message != undefined && !last_message.deleted) 
       await last_message.delete()
 
     console.log(current_period, next_period, isnt_started, ended )
+
+    if (weekend) {
+      last_message = await webhook.send({
+        "content": "",
+        "embeds": [
+          alert_timetable.get_weekend_embed()
+        ]
+      })
+      return
+    }
+
 
     if (ended) {
       last_message = await webhook.send({
@@ -58,7 +74,8 @@ client.on('ready', async () => {
       last_message = await webhook.send({
         "content": "",
         "embeds": [
-          alert_timetable.get_school_isnt_start_embed()
+          alert_timetable.get_school_isnt_start_embed(),
+          alert_timetable.get_mini_subject_embed(T.get_period_subject(0))
         ]
       })
       return
@@ -67,15 +84,14 @@ client.on('ready', async () => {
     if (current_period == undefined)
       return
 
-    let embeds = [
-      alert_timetable.get_subject_embed(current_period)
-    ]
-
-    if (next_period) 
-      embeds.push( alert_timetable.get_mini_subject_embed(next_period))
     last_message = await webhook.send({
       "content": alert_timetable.should_alert(current_period) ? bot_config.ping : "" ,
-      "embeds": embeds
+      "embeds": (() => {
+        if (next_period) 
+          return [ alert_timetable.get_subject_embed(current_period) , alert_timetable.get_mini_subject_embed(next_period)  ]
+        return [ alert_timetable.get_subject_embed(current_period) ]
+      })()
+
     })
 
 

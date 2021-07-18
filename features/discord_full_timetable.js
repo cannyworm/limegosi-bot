@@ -3,7 +3,7 @@ const ms_min = 1000 * 60
 const Discord = require('discord.js')
 const { Command , Commands} = require('../commands')
 const { auto_del_time } = require('../adt')
-const { TimeTable, Subject } = require('../timetable')
+const { Timetable , Subject , date_to_str } = require('../timetable-js')
 
 const days = [
   [['อา', 'อาทิตย์', 'sun', 'sunday'], 'sunday', 'วันอาทิตย์'],
@@ -16,17 +16,7 @@ const days = [
 ]
 
 const tomorrow = ['tmr', 'tomorrow', 'พน', 'พ.น']
-const max_subject_per_msg = 6
 
-const time_format = { hour: '2-digit', minute: '2-digit' }
-var date_to_str = (date) => {
-  return date.toLocaleTimeString([], time_format)
-}
-
-
-const weekend_subjects = [
-  'fun'
-]
 
 
 class EmbedTimetable extends Command {
@@ -54,44 +44,41 @@ class EmbedTimetable extends Command {
     if (day === undefined)
       throw `day === undefined ${args[1]}`
 
-    const line_prefix = '\_\_\_'
+    let timetable = this.timetable.is_weekend(day[1]) ? ['weekend'] : this.timetable.timetable[day[1]]
     
-    let timetable = this.timetable.is_weekend(day[1]) ? weekend_subjects : this.timetable._TimeTable[day[1]]
-
+    let values = ['' , '' ,'']
+    timetable.forEach( (v , i) => {
+      values[0] += `${i+1}. ${i<10?" ":""}${v.code}\n`
+      values[1] += v.name + '\n'
+      values[2] += `${ date_to_str(this.timetable.get_period_start(i,timetable)) }/${date_to_str(this.timetable.get_period_end(i,timetable))}\n`
+    })
     
-    let main_embed = new Discord.MessageEmbed()
-      .setTitle(`ตารางเรียน วัน ${day[2]}`)
-      .addField("รหัสวิชา", line_prefix, true)
-      .addField("ชื่อวิชา", line_prefix, true)
-      .addField("เริ่ม/จบ", line_prefix, true)
+    const embed = new Discord.MessageEmbed()
+    .addFields( [
+      {
+        "name" : "คาบ. รหัสวิชา" , 
+        "value" : values[0],
+        "inline" : true
+      },
+      {
+        "name" : "ชื่อวิชา" , 
+        "value" : values[1],
+        "inline" : true
+      
+      },
+      {
+        "name" : "เริ่ม/จบ" , 
+        "value" : values[2],
+        "inline" : true
+      }
+    ])
 
-    let extra_embed = new Discord.MessageEmbed()
-      .setTitle(`ตารางเรียน วัน ${day[2]} ต่อ`)
-      .addField("รหัสวิชา", line_prefix, true)
-      .addField("ชื่อวิชา", line_prefix, true)
-      .addField("เริ่ม/จบ", line_prefix, true)
-
-
-    timetable.forEach((v, i) => {
-      const subject = this.timetable.get_subject_safe(v);
-      (i > max_subject_per_msg ? extra_embed : main_embed)
-        .addField(subject.code, line_prefix, true)
-        .addField(subject.name, line_prefix, true)
-        .addField(date_to_str(TimeTable.get_period_start(i)) + '/' + date_to_str(TimeTable.get_period_end(i)), line_prefix, true)
+    message.channel.send( {
+      content : "#" , 
+      embed : embed
     })
 
-    message.channel.send({
-      content: "",
-      embed: main_embed
-    }).then(auto_del_time(ms_min * 2))
-
-    if (timetable.length > max_subject_per_msg) {
-      message.channel.send({
-        content: "",
-        embed: extra_embed
-      }).then(auto_del_time(ms_min * 2))
-    }
-
+    console.log(values)
   }
 
 }
@@ -130,6 +117,7 @@ class TextTimetable extends Command {
 
     /* 
     * because length count 'every' character . we need to remove all the merge char.
+    * tf is merge char lol
     * examples
     * - 'ดี' is 2 char but virtually 1 char because -ี doesn't take a seperate space
     */
