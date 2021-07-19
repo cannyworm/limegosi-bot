@@ -5,6 +5,9 @@
             "extra" : "@",
             "alert" : false
         }, 
+        "ศ30104": {
+            "alert" : true
+        },
         "ค32203" : {
             "image" : "https://media1.tenor.com/images/f306ddca13c80c3761823a831732bf5c/tenor.gif?itemid=9718119",
             "alert" : true
@@ -35,6 +38,10 @@
         },
         "พ30104" : {
             "image" : "https://media.tenor.com/images/e8d67d916a64be8529532953c9ea326d/tenor.gif",
+            "alert" : true
+        },
+        "ก32901" : {
+            "image" : "https://media1.tenor.com/images/9c9ce22bbbaa25392592f417db36f866/tenor.gif?itemid=15771477",
             "alert" : true
         },
         "short_break" : {

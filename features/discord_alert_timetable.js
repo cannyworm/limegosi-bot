@@ -54,13 +54,15 @@ class AlertTimetable {
     }
 
     get_subject_embed = (subject) => {
-        let embed = this.assign_var(this.config.subject , subject)
+        const embed =  new Discord.MessageEmbed(this.assign_var(this.config.subject , subject))
+
         this.assign_timestamp(embed)
         return embed
     }
 
     get_mini_subject_embed = (subject) => {
-        let embed = this.assign_var(this.config.min_subject , subject)
+        const embed =  new Discord.MessageEmbed(this.assign_var(this.config.min_subject , subject))
+
         this.assign_timestamp(embed)
         return embed
     }
