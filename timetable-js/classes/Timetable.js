@@ -142,6 +142,11 @@ class Timetable {
             return
         }
 
+        if (this.old_date != this.get_date().getDate()) {
+            this.old_period = -1
+            this.old_date = this.get_date().getDate()
+        }
+
         if (this.old_period !== this.get_current_period_index()) {
             this.old_period = this.get_current_period_index()
             
