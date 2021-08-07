@@ -37,7 +37,8 @@ class Timetable {
                 if (length == undefined) {
                     throw `error parsing day.length ${strlength} is not a valid length`
                 }
-    
+                
+                
                 return new Subject(code , sum += length , length , i , { ... (this.subject_list[code]) })
             }))
         }
@@ -127,42 +128,58 @@ class Timetable {
     }
     
     period_update = () => {
+       
         
-        if (this.is_weekend()) {
-            if (this.old_date != this.get_date().getDate()) {
-
-                this.period_udpate_callbacks.forEach( fn => { 
-                    fn({
-                        weekend : true
-                    })
-                })
-
-                this.old_date = this.get_date().getDate()
-            }
-            return
-        }
-
         if (this.old_date != this.get_date().getDate()) {
             this.old_period = -1
             this.old_date = this.get_date().getDate()
+
+            if (this.is_weekend()) {
+                this.period_udpate_callbacks.forEach( fn => { 
+                    fn( { is_weekend : true })
+               })
+            }
+
         }
+        
+        if (this.is_weekend()) return
+
+        let current_period = this.get_current_period()
+        let next_period = current_period ? this.get_period_subject(current_period.period+1) : undefined
+        
 
         if (this.old_period !== this.get_current_period_index()) {
-            this.old_period = this.get_current_period_index()
             
-            let i = this.get_current_period()
-            let tt = this.get_current_timetalbe()
-            let time_diff = this.get_sum_min() - this.start_time
+            this.old_period = this.get_current_period_index()
             
             this.period_udpate_callbacks.forEach( fn => { 
                 fn({
-                    current_period : i , 
-                    next_period : i ? this.get_period_subject(i.period+1) : undefined,
-                    isnt_started : time_diff < 0 , 
-                    ended : time_diff > tt[tt.length-1].time
+                    current_period : current_period, 
+                    next_period : next_period, 
+                    is_started : this.is_school_start(),
+                    is_ended : this.is_school_end() , 
+                    changed : true 
                 })
             })
+            this.about_to_start = false
+            
+            return
         }
+
+        if ( next_period != undefined &&  this.about_to_start == false && (current_period.time - 359) <= 5  ) {
+            this.period_udpate_callbacks.forEach( fn => { 
+                fn({
+                    current_period : current_period, 
+                    next_period : next_period, 
+                    is_started : this.is_school_start(),
+                    is_ended : this.is_school_end() , 
+                    changed : false
+                })
+            })
+            this.about_to_start = true
+            return
+        } 
+        
 
     }
     
@@ -185,6 +202,18 @@ class Timetable {
 
     }
 
+    is_school_end = () => {
+        let tt = this.get_current_timetalbe()
+        return (this.get_sum_min() - this.start_time) > tt[tt.length-1].time
+    }
+
+    is_school_start = () => {
+        return this.get_school_time() > 0
+    }
+
+    get_school_time = () => {
+        return this.get_sum_min() - this.start_time
+    }
 
     start_update = () => {
         
