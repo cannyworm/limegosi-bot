@@ -3,131 +3,36 @@ const ms_min = 1000 * 60
 
 const { auto_del_time } = require('./adt')
 const Discord = require('discord.js')
-const { TimeTable } = require('./timetable')
-const T = new TimeTable(require('./data/subject.json'), require('./data/timetable.json'))
+const bot_config = require('./bot-config.json')
+const { Timetable } = require('./timetable-js')
 const { Command, Commands } = require('./commands')
 const { EmbedTimetable, TextTimetable } = require('./features/discord_full_timetable')
 const { AlertTimetable } = require('./features/discord_alert_timetable')
 
+const T = new Timetable(require('./data/periods.json'), require('./data/subjects.json'))
 const alert_timetable = new AlertTimetable(T,require('./embeds.json'))
 
-const bot_config = require('./bot-config.json')
 
 const client = new Discord.Client();
 
-var old_period, school_over, school_start , weekend
-var discord_callback;
-
-
-var pupdate = () => {
-
-  if (weekend !== T.is_weekend()) {
-    weekend = T.is_weekend()
-    if (weekend && discord_callback) {
-      console.log('[i] it\' weekend')
-      discord_callback(false)
-      return true
-    }
-  }
-  
-  if (weekend)
-    return false
-
-  if (school_over !== T.is_school_over()) {
-    school_over = T.is_school_over()
-    if (school_over && discord_callback) {
-      console.log('[i] school is over')
-      discord_callback(false)
-      return true
-    }
-  }
-
-  
-  if (school_start !== T.is_school_start()) {
-    school_start = T.is_school_start()
-    if (!school_start && discord_callback) {
-      console.log('[i] school is didn\'t start yet')
-      discord_callback(false)
-      return true
-    }
-  }
-
-  if (T.is_school_over() === true || T.is_school_start() === false) {
-    return false
-  }
-
-  if (old_period != T.get_current_period()) {
-
-    console.log('[i] update alert')
-    console.log(`[i] cur subject ${JSON.stringify(T.get_current_subject())}`)
-    old_period = T.get_current_period()
-
-    if (discord_callback) discord_callback(true)
-
-    return true
-  } 
-  return false
-}
-
-
-
 const cmds = new Commands(bot_config.prefix, { auto_delete_prompt: 1000 })
 
-
-var pcheck
 var last_message = undefined
 
 client.on('ready', async () => {
 
   console.log(`bot is rady login as ${client.user.tag}`)
   
-
+  client.user.setActivity({
+    "type": "STREAMING",
+    "name" : "limegosi:louismonade"
+  })
   const is_owner = async (message) => {
     return message.author.id == bot_config.owner
   }
 
-  cmds.add_command(new Command('ping', async (message) => { message.reply('pong') }, is_owner))
-
-  cmds.add_command(new Command('set', async (message,args) => {
-
-    let subject_code = args[1]
-    let option = args[2]
-    let value = args[3]
-
-    if (subject_code === undefined)
-      throw "subject_code === undefined"
-    if (option === undefined)
-      throw "option === undefined"
-    if (value === undefined)
-      throw "value === undefined"
-
-    let subject = T.get_subject(subject_code)
-
-    if (subject === undefined)
-      throw "subject === undefined"
-
-    console.log(`[$] old ${subject_code}[${option}] = ${subject[option]}`)
-    subject[option] = value
-    console.log(`[$] new ${subject_code}[${option}] = ${subject[option]}`)
-
-  }, [is_owner]))
-
-  cmds.add_command(new Command('d_c', async (message,args) => {
-    discord_callback(args[1] === 'true')
-  }))
-
-  cmds.add_command(new Command('pupdate', async () => {
-    console.log(`pupdate() : ${pupdate()}`)
-  }))
-
-  cmds.add_command(new Command('set_p', async (message,args) => {
-    let value = Number.parseInt(args[1])
-    T.force_period = Number.isNaN(value) ? undefined : value
-  },  [is_owner]))
-
+  cmds.add_command(new Command('ping', async (message) => { message.reply('pong') }, [is_owner]))
   cmds.add_command(new EmbedTimetable(T,'tt'))
-  cmds.add_command(new TextTimetable(T,'ttt'))
-  
 
   let my_guild = await client.guilds.fetch(bot_config.my_guild)
   let webhook = (await my_guild.fetchWebhooks()).find((v, k) => k == bot_config.webhook)
@@ -135,68 +40,64 @@ client.on('ready', async () => {
   let channel = await my_guild.channels.resolve(webhook.channelID)
   last_message = (await channel.messages.fetch({ limit: 10 })).find(m => m.author.id == webhook.id)
 
-  discord_callback = async (is_subject) => {
-    if (typeof last_message !== 'undefined')
-      last_message.delete().then(() => last_message = undefined)
-    
-    if (is_subject === false) {
+  if (last_message != undefined)
+    await last_message.delete()
 
-      if (T.is_weekend()) { 
-        last_message = await webhook.send({
-          content: "",
-          embeds: [
-            alert_timetable.get_weekend_embed()
-          ]
-        })
-        return
-      }
-      
+  T.add_period_update_callback( async ({ current_period, next_period, isnt_started, ended , weekend }) => {
+    if (last_message != undefined && !last_message.deleted) 
+      await last_message.delete()
 
-      if (T.is_school_over()) {
-        last_message = await webhook.send({
-          content: "",
-          embeds: [
-            alert_timetable.get_school_over_embed()
-          ]
-        })
-        return
-      }
+    console.log(current_period, next_period, isnt_started, ended )
 
-      if (!T.is_school_start()) {
-        last_message = await webhook.send({
-          content: "",
-          embeds: [
-            alert_timetable.get_school_isnt_start_embed(),
-            alert_timetable.get_min_subject_embed(T.get_period_subject(0))
-          ]
-        })
-        return
-      }
+    if (weekend) {
+      last_message = await webhook.send({
+        "content": "",
+        "embeds": [
+          alert_timetable.get_weekend_embed()
+        ]
+      })
+      return
+    }
 
-      
+
+    if (ended) {
+      last_message = await webhook.send({
+        "content": "",
+        "embeds": [
+          alert_timetable.get_school_over_embed()
+        ]
+      })
+      return
+    }
+
+    if (isnt_started) {
+      last_message = await webhook.send({
+        "content": "",
+        "embeds": [
+          alert_timetable.get_school_isnt_start_embed(),
+          alert_timetable.get_mini_subject_embed(T.get_period_subject(0))
+        ]
+      })
+      return
     }
     
-    let cs = T.get_current_subject()
-    let message_object = {
-      content: cs.alert.ping === true ?  bot_config.ping : "",
-      embeds: [
-        alert_timetable.get_subject_embed(cs)
-       ]
-    }
+    if (current_period == undefined)
+      return
 
-    let np = T.get_current_period() + 1
-    if (np < T.get_current_table().length) {
-      message_object.embeds.push(
-        alert_timetable.get_min_subject_embed(T.get_period_subject(np))
-      )
-    }
+    last_message = await webhook.send({
+      "content": alert_timetable.should_alert(current_period) ? bot_config.ping : "" ,
+      "embeds": (() => {
+        if (next_period) 
+          return [ alert_timetable.get_subject_embed(current_period) , alert_timetable.get_mini_subject_embed(next_period)  ]
+        return [ alert_timetable.get_subject_embed(current_period) ]
+      })()
 
-    last_message = await webhook.send(
-      message_object
-    )
-  }
+    })
 
-  pcheck = setInterval(pupdate, 100)
+
+  })
+
+  T.start_update()
 })
 
 client.on('message', async (message) => {

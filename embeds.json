@@ -1,5 +1,56 @@
 {
+    "subjects": {
+        "_global" : {
+            "image" : "https://nonexitssite.com",
+            "extra" : "@",
+            "alert" : false
+        }, 
+        "ศ30104": {
+            "alert" : true
+        },
+        "ค32203" : {
+            "image" : "https://media1.tenor.com/images/f306ddca13c80c3761823a831732bf5c/tenor.gif?itemid=9718119",
+            "alert" : true
+        },
+        "ค32101" : {
+            "image" : "https://media1.tenor.com/images/e2e82ff93631f17b1d08f0d598023b4b/tenor.gif?itemid=9945581",
+            "alert" : true
+        },
+        "อ32101" : {
+            "image" : "https://media1.tenor.com/images/8429f6282bb698856104a46c822675a4/tenor.gif?itemid=21160601",
+            "alert" : true
+        },
+        "อ32203" : {
+            "image" : "https://media1.tenor.com/images/a94ad99d55ef8cc0df97109b9a557aff/tenor.gif?itemid=21160496",
+            "alert" : true
+        },
+        "ส32102" : {
+            "image" : "https://media.tenor.com/images/cd24221fe383ee544c9d726ac6cb65d4/tenor.gif",
+            "alert" : true
+        },
+        "ว30242" : {
+            "image" : "https://media1.tenor.com/images/f167b4fcda0cd93f15afa1e1c3217987/tenor.gif?itemid=14797513",
+            "alert" : true
+        },
+        "ว30255" : {
+            "image" : "https://media.tenor.com/images/e54e9ffc86c29bdee807aa217bb9cb5b/tenor.gif",
+            "alert" : true
+        },
+        "พ30104" : {
+            "image" : "https://media.tenor.com/images/e8d67d916a64be8529532953c9ea326d/tenor.gif",
+            "alert" : true
+        },
+        "ก32901" : {
+            "image" : "https://media1.tenor.com/images/9c9ce22bbbaa25392592f417db36f866/tenor.gif?itemid=15771477",
+            "alert" : true
+        },
+        "short_break" : {
+            "image" : "https://media1.tenor.com/images/5dac9957186c790953d9962be222167b/tenor.gif?itemid=21293550"
+        }
+        
 
+        
+    },
     "school_over": {
         "color": 6029567,
         "author": {
@@ -8,13 +59,14 @@
         },
         "title": "School is over",
         "description": "I'm gone. bye",
-        "image": "https://media1.tenor.com/images/8cdf1a00339c12409df0714cf46745bc/tenor.gif?itemid=21674137",
+        "image": {
+            "url" : "https://media1.tenor.com/images/8cdf1a00339c12409df0714cf46745bc/tenor.gif?itemid=21674137"
+        },
         "footer": {
             "text": "last check @",
             "icon_url": "https://i.imgur.com/McggFJP.jpeg"
         }
     },
-
     "school_isnt_start": {
         "color": 3407616,
         "author": {
@@ -24,15 +76,14 @@
         "title": "School isn't start yet..",
         "description": "goto sleep while you can",
         "image": {
-            "url":"https://media1.tenor.com/images/e7f7d1d8bde5a79dbcc8c382261c1fc3/tenor.gif?itemid=15672620"
+            "url": "https://media1.tenor.com/images/e7f7d1d8bde5a79dbcc8c382261c1fc3/tenor.gif?itemid=15672620"
         },
         "footer": {
             "text": "last check @",
             "icon_url": "https://i.imgur.com/McggFJP.jpeg"
         }
     },
-    
-    "weekend" : {
+    "weekend": {
         "title": "yoooooooo It's weekend  :partying_face:",
         "description": "see ya all later",
         "color": 55039,
@@ -48,65 +99,65 @@
             "url": "https://media.giphy.com/media/utUEJY2cXzVvnrB152/giphy.gif"
         }
     },
-    
     "subject": {
-        "color" : 2752256,
+        "color": 2752256,
         "author": {
             "name": "Class 5/9",
-            "icon_url":  "https://i.imgur.com/HQWULmW.jpeg"
+            "icon_url": "https://i.imgur.com/HQWULmW.jpeg"
         },
-        "title" : "$name$",
-        "description" : "$code$ $teacher_name$",
-        "fields" : [
+        "title": "$name$ [$period$]",
+        "description": "$code$ $teacher_name$",
+        "fields": [
             {
-                "name" : "Start",
-                "value" : "$start_period$",
-                "inline" : true
+                "name": "Start",
+                "value": "$start_period$",
+                "inline": true
             },
             {
-                "name" : "End",
-                "value" : "$end_period$",
-                "inline" : true
+                "name": "End",
+                "value": "$end_period$",
+                "inline": true
             },
             {
-                "name" : "Google Meet / Zoom",
-                "value" : "$meet_link$"
+                "name": "Google Meet / Zoom",
+                "value": "$meet_link$"
             },
             {
-                "name" : "Google Classroom",
-                "value" : "$google_classroom$",
-                "inline" : true
-
+                "name": "Google Classroom",
+                "value": "$google_classroom$",
+                "inline": true
             },
             {
-                "name" : "Extra",
-                "value" : "$extra$"
+                "name": "Extra",
+                "value": "$extra$"
             }
         ],
-        "image" : "$image$",
+        "image":  {
+            "url" : "$image$"
+        },
         "footer": {
             "text": "last check @",
             "icon_url": "https://i.imgur.com/McggFJP.jpeg"
         }
     },
     "min_subject": {
-        "color" : 16777215,
+        "color": 16777215,
         "author": {
             "name": "Next Subject",
-            "icon_url":  "https://i.imgur.com/HQWULmW.jpeg"
+            "icon_url": "https://i.imgur.com/HQWULmW.jpeg"
         },
-        "title" : "$name$",
-        "description" : "$code$ $teacher_name$",
-        "fields" : [
+        "title": "$name$",
+        "description": "$code$ $teacher_name$",
+        "fields": [
             {
-                "name" : "Start",
-                "value" : "$start_period$",
-                "inline" : true
+                "name": "Start",
+                "value": "$start_period$",
+                "inline": true
             },
             {
-                "name" : "End",
-                "value" : "$end_period$",
-                "inline" : true
+                "name": "End",
+                "value": "$end_period$",
+                "inline": true
             }
         ],
         "footer": {

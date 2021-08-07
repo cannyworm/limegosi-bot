@@ -1,8 +1,5 @@
 const Discord = require('discord.js')
-
-var auto_del_time = (time) => {
-    return (msg) => {  setTimeout((m) => { if (m.deleted) {return} m.delete().then((mm) => console.log(`[i] message ${mm.id} deleted `)) }, time, msg)}
-}
+const {auto_del_time} = require('./adt')
 
 var _debug = (format) => {
     console.debug(format)
@@ -134,6 +131,11 @@ class Commands {
                 console.log(`[!] error ${e}`)
                 throw e
             }
+            finally
+            {
+                if (typeof this.options.auto_delete_prompt !== 'undefined' && this.options.auto_delete_prompt > 0)
+                    auto_del_time(this.options.auto_delete_prompt)(message)
+            }
         }
         else {
             
@@ -142,10 +144,6 @@ class Commands {
             
             return false
         }
-
-        if (typeof this.options.auto_delete_prompt !== 'undefined' && this.options.auto_delete_prompt > 0)
-            auto_del_time(this.options.auto_delete_prompt)(message)
-
         return true
     }
 
