@@ -166,7 +166,7 @@ class Timetable {
             return
         }
 
-        if ( next_period != undefined &&  this.about_to_start == false && (current_period.time - 359) <= 5  ) {
+        if ( next_period != undefined &&  this.about_to_start == false && (current_period.time - this.get_school_time()) <= 5  ) {
             this.period_udpate_callbacks.forEach( fn => { 
                 fn({
                     current_period : current_period, 

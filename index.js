@@ -49,7 +49,7 @@ client.on('ready', async () => {
 
     const webhook_send = async ( embeds , content ) => last_message = await webhook.send( {content : content ?? "" , embeds : embeds } )
     console.log(current_period, next_period, is_started, is_ended  , changed)
-
+	
     if (is_weekend) {
       await webhook_send( [ alert_timetable.get_weekend_embed()] )
       return
@@ -60,9 +60,9 @@ client.on('ready', async () => {
       await webhook_send( [ alert_timetable.get_school_over_embed()] )
       return
     }
-
+	
     if (!is_started) {
-      await webhook_send( [ alert_timetable.get_school_isnt_start_embed() ,  alert_timetable.get_mini_subject_embed(T.get_period_subject(0)) ] )
+      await webhook_send( [ alert_timetable.get_school_isnt_start_embed() ,  alert_timetable.compile_embed( alert_timetable.embeds.current_bottom ,T.get_period_subject(0) )  ] )
       return  
     }
     
